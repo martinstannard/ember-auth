@@ -3,6 +3,7 @@ class Em.Auth.Session
     @signedIn? || (@signedIn = false)
     @userId?   || (@userId   = null)
     @user?     || (@user     = null)
+    @userType  || (@userType = null)
 
     unless @adapter?
       adapter = Em.String.capitalize Em.String.camelize @auth.sessionAdapter
@@ -22,6 +23,7 @@ class Em.Auth.Session
   findUser: ->
     if @userId && (modelKey = @auth.userModel) && (model = Ember.get modelKey)
       @user = model.find @userId
+      @userType = @user.type
 
   start: ->
     @signedIn  = true
@@ -54,6 +56,7 @@ class Em.Auth.Session
       signedIn:  Em.computed(=> @signedIn ).property('_session.signedIn')
       userId:    Em.computed(=> @userId   ).property('_session.userId')
       user:      Em.computed(=> @user     ).property('_session.user')
+      userType:  Em.computed(=> @userType ).property('_session.userType')
       startTime: Em.computed(=> @startTime).property('_session.startTime')
       endTime:   Em.computed(=> @endTime  ).property('_session.endTime')
 
